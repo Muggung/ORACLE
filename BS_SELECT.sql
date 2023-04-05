@@ -140,9 +140,26 @@ WHERE DEPT_CODE IN ('D5', 'D6', 'D9');
 
 -- 23. EMPLOYEE테이블에서 사번이 201번인 사원명, 주민번호 앞자리, 주민번호 뒷자리, 주민번호 앞자리와 뒷자리의 합 조회
 
-
+SELECT EMP_NAME AS 사원명, SUBSTR(EMP_NO, 1, 6) AS "주민번호 앞자리", SUBSTR(EMP_NO, 8) AS "주민번호 뒷자리",
+          SUBSTR(EMP_NO, 1, 6) + SUBSTR(EMP_NO, 8) AS "주민번호 앞 뒷자리 합"
+FROM EMPLOYEE
+WHERE EMP_ID = '201';
 
 -- 24. EMPLOYEE 테이블에서 부서코드가 D5인 직원의 보너스 포함 연봉 합 조회
 
+SELECT SUM((SALARY * 12) + (NVL(SALARY * BONUS, 0) * 12)) AS "D5 부서 연봉 합"
+FROM EMPLOYEE
+WHERE DEPT_CODE = 'D5';
+
+SELECT *
+FROM EMPLOYEE
+WHERE EXTRACT(YEAR FROM HIRE_DATE) = 2001;
+
 -- 25. EMPLOYEE테이블에서 직원들의 입사일로부터 년도만 가지고 각 년도별 입사 인원수 조회, 전체 직원 수, 2001년, 2002년, 2003년, 2004년
 
+SELECT COUNT(*) AS 전체직원,
+          COUNT(CASE WHEN EXTRACT(YEAR FROM HIRE_DATE) = 2001 THEN 1 END) AS "2001년",
+          COUNT(CASE WHEN EXTRACT(YEAR FROM HIRE_DATE) = 2002 THEN 1 END) AS "2002년",
+          COUNT(CASE WHEN EXTRACT(YEAR FROM HIRE_DATE) = 2003 THEN 1 END) AS "2003년",
+          COUNT(CASE WHEN EXTRACT(YEAR FROM HIRE_DATE) = 2004 THEN 1 END) AS "2004년"
+FROM EMPLOYEE;
