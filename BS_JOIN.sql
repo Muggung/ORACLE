@@ -1,0 +1,7 @@
+-- 1. 70년대 생(1970~1979) 중 여자이면서 전씨인 사원의 이름과 주민번호, 부서 명, 직급 조회
+SELECT EMP_NAME AS 사원명, EMP_NO AS 주민번호, DEPT_TITLE AS 부서명, JOB_CODE AS 직급
+FROM EMPLOYEE JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID 
+WHERE SUBSTR(EMP_NO, 1, 2) BETWEEN 70 AND 79
+           AND SUBSTR(EMP_NO, 8, 1) = 2
+           AND EMP_NAME LIKE '전%'; 
+
