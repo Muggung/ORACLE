@@ -1,0 +1,29 @@
+-- 문제1
+-- 기술지원부에 속한 사람들의 사람의 이름,부서코드,급여를 출력하시오.
+
+SELECT EMP_NAME AS 사원명, DEPT_CODE AS 부서코드, SALARY AS 급여
+FROM EMPLOYEE
+WHERE DEPT_CODE = 'D8';
+
+-- 문제2
+-- 기술지원부에 속한 사람들 중 가장 연봉이 높은 사람의 이름,부서코드,급여를 출력하시오
+
+SELECT EMP_NAME AS 사원명, DEPT_CODE AS 부서코드, SALARY AS 급여
+FROM EMPLOYEE E
+WHERE DEPT_CODE = 'D8' AND SALARY >= (SELECT MAX(SALARY) FROM EMPLOYEE WHERE DEPT_CODE = 'D8');
+
+-- 문제3
+-- 매니저가 있는 사원중에 월급이 전체사원 평균을 넘고 
+-- 사번,이름,매니저 이름, 월급을 구하시오. 
+-- 1. JOIN을 이용하시오
+
+SELECT E.EMP_ID AS 사원번호, E.EMP_NAME AS 이름, M.EMP_NAME AS 매니저이름, E.SALARY AS 월급
+FROM EMPLOYEE E JOIN EMPLOYEE M ON E.MANAGER_ID = M.EMP_ID
+WHERE E.SALARY > (SELECT AVG(SALARY) FROM EMPLOYEE);
+
+-- 2. JOIN하지 않고, 스칼라상관쿼리(SELECT)를 이용하기
+
+SELECT EMP_ID AS 사원번호, EMP_NAME AS 이름, 
+       (SELECT EMP_NAME FROM EMPLOYEE WHERE EMP_ID = E.MANAGER_ID) AS 매니저이름, SALARY AS 월급
+FROM EMPLOYEE E
+WHERE MANAGER_ID IS NOT NULL AND SALARY > (SELECT AVG(SALARY) FROM EMPLOYEE);
