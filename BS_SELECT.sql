@@ -124,7 +124,14 @@ FROM EMPLOYEE;
 SELECT EMP_NAME AS 사원명,
           DEPT_CODE AS 부서코드,
           TO_NUMBER(SUBSTR(EMP_NO, 1, 2)) || '년' || ' ' || SUBSTR(EMP_NO, 3, 2) || '월' || ' ' || SUBSTR(EMP_NO,5,2) || '일' AS 생년월일,
-          EXTRACT (YEAR FROM SYSDATE) - EXTRACT (YEAR FROM TO_DATE(SUBSTR (EMP_NO, 1, 2),'RR')) AS 나이
+          CASE 
+                WHEN EXTRACT(MONTH FROM SYSDATE) - SUBSTR(EMP_NO,3, 2) >= 1
+                AND EXTRACT(DAY FROM SYSDATE) - SUBSTR(EMP_NO, 5, 2) >= 1
+                THEN EXTRACT (YEAR FROM SYSDATE) - EXTRACT (YEAR FROM TO_DATE(SUBSTR (EMP_NO, 1, 2),'RR')) + 1
+                
+                WHEN EXTRACT(MONTH FROM SYSDATE) - SUBSTR(EMP_NO,3, 2) <= 0
+                THEN EXTRACT (YEAR FROM SYSDATE) - EXTRACT (YEAR FROM TO_DATE(SUBSTR (EMP_NO, 1, 2),'RR'))
+          END AS 만나이
 FROM EMPLOYEE;
 
 -- 22. EMPLOYEE 테이블에서 부서코드가 D5, D6, D9인 사원만 조회하되 D5면 총무부, D6면 기획부, D9면 영업부로처리 (단, 부서코드 오름차순으로 정렬)
