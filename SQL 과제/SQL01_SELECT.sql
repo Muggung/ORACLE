@@ -1,59 +1,60 @@
--- 1. Ãá ±â¼ú´ëÇÐ±³ÀÇ ÇÐ°ú ÀÌ¸§°ú °è¿­À» Ç¥½ÃÇÏ±â,
--- ´Ü, Ãâ·Â Çì´õ´Â 'ÇÐ°ú¸í', '°è¿­'·Î Ç¥½ÃÇÑ´Ù.
+-- 1. ì¶˜ ê¸°ìˆ ëŒ€í•™êµì˜ í•™ê³¼ ì´ë¦„ê³¼ ê³„ì—´ì„ í‘œì‹œí•˜ê¸°,
+-- ë‹¨, ì¶œë ¥ í—¤ë”ëŠ” 'í•™ê³¼ëª…', 'ê³„ì—´'ë¡œ í‘œì‹œí•œë‹¤.
 
-SELECT DEPARTMENT_NAME AS ÇÐ°ú¸í, CATEGORY AS °è¿­
+SELECT DEPARTMENT_NAME AS í•™ê³¼ëª…, CATEGORY AS ê³„ì—´
 FROM TB_DEPARTMENT;
 
--- 2. ÇÐ°úÀÇ ÇÐ°ú Á¤¿øÀ» '@@°úÀÇ Á¤¿øÀº 00¸í ÀÔ´Ï´Ù.'°ú °°Àº ÇüÅÂ·Î Ãâ·Â
+-- 2. í•™ê³¼ì˜ í•™ê³¼ ì •ì›ì„ '@@ê³¼ì˜ ì •ì›ì€ 00ëª… ìž…ë‹ˆë‹¤.'ê³¼ ê°™ì€ í˜•íƒœë¡œ ì¶œë ¥
 
-SELECT DEPARTMENT_NAME || 'ÀÇ Á¤¿øÀº ' || CAPACITY || '¸íÀÔ´Ï´Ù.' AS "ÇÐ°úº° Á¤¿ø"
+SELECT DEPARTMENT_NAME || 'ì˜ ì •ì›ì€ ' || CAPACITY || 'ëª…ìž…ë‹ˆë‹¤.' AS "í•™ê³¼ë³„ ì •ì›"
 FROM TB_DEPARTMENT;
 
--- 3. "±¹¾î±¹¹®ÇÐ°ú"¿¡ ´Ù´Ï´Â ¿©ÇÐ»ý Áß ÇöÀç ÈÞÇÐÁßÀÎ ¿©ÇÐ»ýÀ» Ã£¾Æ Ãâ·Â
+-- 3. "êµ­ì–´êµ­ë¬¸í•™ê³¼"ì— ë‹¤ë‹ˆëŠ” ì—¬í•™ìƒ ì¤‘ í˜„ìž¬ íœ´í•™ì¤‘ì¸ ì—¬í•™ìƒì„ ì°¾ì•„ ì¶œë ¥
 
-SELECT STUDENT_NAME AS ÇÐ»ýÀÌ¸§
+SELECT STUDENT_NAME AS í•™ìƒì´ë¦„
 FROM TB_DEPARTMENT JOIN TB_STUDENT USING (DEPARTMENT_NO)
 WHERE DEPARTMENT_NO = '001' AND SUBSTR(STUDENT_SSN, 8, 1) = '2' AND ABSENCE_YN = 'Y';
 
--- 4. µµ¼­°ü¿¡¼­ ´ëÃâ Àå±â ¿¬Ã¼ÀÚµéÀ» Ã£¾Æ ÀÌ¸§À» Ãâ·Â
--- ´ë»óÀÚ ÇÐ¹ø : A513079 | A513090 | A513091 | A513110 | A513119
+-- 4. ë„ì„œê´€ì—ì„œ ëŒ€ì¶œ ìž¥ê¸° ì—°ì²´ìžë“¤ì„ ì°¾ì•„ ì´ë¦„ì„ ì¶œë ¥
+-- ëŒ€ìƒìž í•™ë²ˆ : A513079 | A513090 | A513091 | A513110 | A513119
 
-SELECT STUDENT_NAME AS ÇÐ»ýÀÌ¸§
+SELECT STUDENT_NAME AS í•™ìƒì´ë¦„
 FROM TB_STUDENT
 WHERE STUDENT_NO IN ('A513079',  'A513090', 'A513091', 'A513110', 'A513119');
 
--- 5. ÀÔÇÐÁ¤¿øÀÌ 20¸í ÀÌ»ó 30¸í ÀÌÇÏÀÎ ÇÐ°úµéÀÇ ÇÐ°ú ÀÌ¸§°ú °è¿­À» Ãâ·Â
+-- 5. ìž…í•™ì •ì›ì´ 20ëª… ì´ìƒ 30ëª… ì´í•˜ì¸ í•™ê³¼ë“¤ì˜ í•™ê³¼ ì´ë¦„ê³¼ ê³„ì—´ì„ ì¶œë ¥
 
-SELECT DEPARTMENT_NAME AS ÇÐ°ú¸í, CATEGORY AS °è¿­
+SELECT DEPARTMENT_NAME AS í•™ê³¼ëª…, CATEGORY AS ê³„ì—´
 FROM TB_DEPARTMENT
 WHERE CAPACITY BETWEEN 20 AND 30;
 
--- 6. Ãá ´ëÇÐ±³´Â ÃÑÀåÀ» Á¦¿ÜÇÏ°í ¸ðµç ±³¼öµéÀÌ ¼Ò¼Ó ÇÐ°ú¸¦ °¡Áø´Ù. ÃÑÀåÀÇ ÀÌ¸§À» Ãâ·Â
+-- 6. ì¶˜ ëŒ€í•™êµëŠ” ì´ìž¥ì„ ì œì™¸í•˜ê³  ëª¨ë“  êµìˆ˜ë“¤ì´ ì†Œì† í•™ê³¼ë¥¼ ê°€ì§„ë‹¤. ì´ìž¥ì˜ ì´ë¦„ì„ ì¶œë ¥
 
-SELECT PROFESSOR_NAME AS ÃÑÀå
+SELECT PROFESSOR_NAME AS ì´ìž¥
 FROM TB_DEPARTMENT RIGHT JOIN TB_PROFESSOR USING(DEPARTMENT_NO)
 WHERE DEPARTMENT_NO IS NULL;
 
--- 7. Àü»ê»óÀÇ Âø¿À·Î ÇÐ°ú°¡ ÁöÁ¤µÇÁö ¾ÊÀº ÇÐ»ýÀÌ ÀÖ´ÂÁö Ãâ·Â
+-- 7. ì „ì‚°ìƒì˜ ì°©ì˜¤ë¡œ í•™ê³¼ê°€ ì§€ì •ë˜ì§€ ì•Šì€ í•™ìƒì´ ìžˆëŠ”ì§€ ì¶œë ¥
 
 SELECT *
 FROM TB_STUDENT
 WHERE DEPARTMENT_NO = ' ' OR DEPARTMENT_NO IS NULL;
 
--- 8. ¼ö°­½ÅÃ», ¼±¼ö°ú¸ñÀ» È®ÀÎÇØ¾ß ÇÏ´Âµ¥, ¼±¼ö°ú¸ñÀÌ ¾î¶² °ú¸ñÀÎÁö Á¶È¸
+-- 8. ìˆ˜ê°•ì‹ ì²­, ì„ ìˆ˜ê³¼ëª©ì„ í™•ì¸í•´ì•¼ í•˜ëŠ”ë°, ì„ ìˆ˜ê³¼ëª©ì´ ì–´ë–¤ ê³¼ëª©ì¸ì§€ ì¡°íšŒ
 
-SELECT CLASS_NO AS ¼±¼ö°ú¸ñ
+SELECT CLASS_NO AS ì„ ìˆ˜ê³¼ëª©
 FROM TB_CLASS
 WHERE PREATTENDING_CLASS_NO IS NOT NULL;
 
--- 9. Ãá ´ëÇÐ¿¡´Â ¾î¶² °è¿­µéÀÌ ÀÖ´ÂÁö Á¶È¸
+-- 9. ì¶˜ ëŒ€í•™ì—ëŠ” ì–´ë–¤ ê³„ì—´ë“¤ì´ ìžˆëŠ”ì§€ ì¡°íšŒ
 
-SELECT CATEGORY AS °è¿­
+SELECT CATEGORY AS ê³„ì—´
 FROM TB_DEPARTMENT
 GROUP BY CATEGORY;
 
--- 10. 02ÇÐ¹ø ÀüÁÖ¿¡ °ÅÁÖÇÏ´Â ÇÐ»ýµéÀÇ ÇÐ¹ø, ÀÌ¸§, ÁÖ¹Î¹øÈ£¸¦ Ãâ·Â(´Ü, ÈÞÇÐÇÑ »ç¶÷ Á¦¿Ü)
+-- 10. 02í•™ë²ˆ ì „ì£¼ì— ê±°ì£¼í•˜ëŠ” í•™ìƒë“¤ì˜ í•™ë²ˆ, ì´ë¦„, ì£¼ë¯¼ë²ˆí˜¸ë¥¼ ì¶œë ¥
+-- ë‹¨, íœ´í•™í•œ ì‚¬ëžŒ ì œì™¸
 
-SELECT STUDENT_NO AS ÇÐ¹ø, STUDENT_NAME AS ÀÌ¸§, STUDENT_SSN AS ÁÖ¹Î¹øÈ£
+SELECT STUDENT_NO AS í•™ë²ˆ, STUDENT_NAME AS ì´ë¦„, STUDENT_SSN AS ì£¼ë¯¼ë²ˆí˜¸
 FROM TB_STUDENT
-WHERE STUDENT_ADDRESS LIKE '%ÀüÁÖ%' AND STUDENT_NO LIKE 'A2%' AND ABSENCE_YN = 'N';
+WHERE STUDENT_ADDRESS LIKE '%ì „ì£¼%' AND STUDENT_NO LIKE 'A2%' AND ABSENCE_YN = 'N';
