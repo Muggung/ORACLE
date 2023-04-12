@@ -65,5 +65,50 @@ REFERENCES TB_CATEGORY(CATEGORY_NAME);
 -- 10. 학생 정보가 저장된 학생일반정보VIEW 만들기
 
 CREATE OR REPLACE VIEW VW_학생일반정보
-        AS SELECT STUDENT_NO, STUDENT_NAME, STUDENT_ADDRESS
-            FROM TB_STUDENT;
+        AS SELECT STUDENT_NO AS 학번, STUDENT_NAME AS 학생명, STUDENT_ADDRESS AS 주소
+        FROM TB_STUDENT;
+
+-- 11. 춘 대학에는 1년에 두 번씩 학과별로 학생과 지도교수가 지도 면담을 진행한다.
+-- 이를 위해 사용할 학생명, 학과명, 담당교수명으로 구성된 VIEW를 만들기
+-- 이 때, 지도 교수가 없는 학생이 있을 수 있다. (SELECT문으로 조회할 경우 학과별로 정렬)
+
+CREATE OR REPLACE VIEW VW_지도면담
+        AS SELECT STUDENT_NAME AS 학생명, DEPARTMENT_NAME AS 학과명, NVL(PROFESSOR_NAME, '미지정') AS 담당교수
+        FROM TB_STUDENT
+            LEFT JOIN TB_DEPARTMENT USING(DEPARTMENT_NO)
+            LEFT JOIN TB_PROFESSOR ON COACH_PROFESSOR_NO = PROFESSOR_NO
+        ORDER BY 2;
+        
+-- 12. 모든 학과의 학과별 학생 수를 확인할 수 있도록 VIEW를 만들기
+
+CREATE OR REPLACE VIEW VW_학과별학생수
+        AS SELECT DEPARTMENT_NAME AS 학과, COUNT(*) || '명' AS 학생수
+        FROM TB_STUDENT
+            JOIN TB_DEPARTMENT USING(DEPARTMENT_NO)
+        GROUP BY DEPARTMENT_NAME;
+        
+-- 13. 위에서 생성한 학생일반정보 VIEW를 통해 학번이 'A213046'인 학생의 이름을 본인이름으로 변경
+
+UPDATE VW_학생일반정보
+SET STUDENT_NAME = '이동제'
+WHERE STUDENT_NO = 'A213046';
+
+-- 14. 13번과 같이 VIEW를 통해 데이터가 변경될 수 있는 상황을 막는 VIEW를 생성하기
+
+CREATE OR REPLACE VIEW VW_학생일반정보_보안
+        AS SELECT STUDENT_NO AS 학번, STUDENT_NAME AS 학생명, STUDENT_ADDRESS AS 주소
+        FROM TB_STUDENT
+        WITH READ ONLY;
+
+-- 15. 춘 대학은 매년 수강신청 기간이 되면, 특정 인기 과목들에 수강신청이 몰려 문제가 생긴다.
+-- 최근 3년을 기준으로 수강인원이 가장 많았던 과목 3개 찾기
+
+SELECT *
+FROM (SELECT CLASS_NO AS 과목번호, CLASS_NAME AS 과목명, COUNT(*) AS 수강신청인원
+        FROM TB_CLASS
+            JOIN TB_GRADE USING(CLASS_NO)
+        WHERE SUBSTR(TERM_NO, 1, 4) IN ('2009', '2008', '2007', '2006', '2005')
+        GROUP BY CLASS_NO, CLASS_NAME
+        ORDER BY 3 DESC
+        )
+WHERE ROWNUM < 4;
