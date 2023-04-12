@@ -1,4 +1,5 @@
--- 1. 학생이름과 주소지를 표시하기 단, 이름으로 오름차순 정렬 표시
+-- 1. 학생이름과 주소지를 표시하기 
+-- 단, 이름으로 오름차순 정렬 표시
 
 SELECT STUDENT_NAME AS 학생이름, STUDENT_ADDRESS AS 주소지
 FROM TB_STUDENT
